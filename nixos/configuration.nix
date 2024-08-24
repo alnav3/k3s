@@ -13,6 +13,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # allow unfree for nvidia drivers
+  nixpkgs.config.allowUnfree = true;
+
   # NVIDIA configuration
   hardware.opengl.enable = lib.mkIf (meta.hostname == "homelab-0") true;
   services.xserver.videoDrivers = lib.mkIf (meta.hostname == "homelab-0") [ "nvidia" ];
