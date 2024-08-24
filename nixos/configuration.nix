@@ -13,6 +13,14 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # NVIDIA configuration
+  hardware.opengl.enable = lib.mkIf (meta.hostname == "homelab-0") true;
+  services.xserver.videoDrivers = lib.mkIf (meta.hostname == "homelab-0") [ "nvidia" ];
+  hardware.nvidia = lib.mkIf (meta.hostname == "homelab-0") {
+    modesetting.enable = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
   fileSystems = lib.mkIf (config.networking.hostName == "homelab-0") {
     "/media/HDD1" = {
       device = "/dev/disk/by-uuid/81297f75-d3cb-4f83-b856-52557dff1131";
@@ -68,43 +76,6 @@
   ];
   #virtualisation.docker.logDriver = "json-file";
 
-  services.xserver.videoDrivers = if config.networking.hostName == "homelab-0" then ["nvidia"] else [];
-  # Conditional NVIDIA configuration
-  hardware = {
-      opengl = if config.networking.hostName == "homelab-0" then {
-          enable = true;
-      } else null;
-      nvidia = if config.networking.hostName == "homelab-0" then {
-        # Modesetting is required.
-        modesetting.enable = true;
-
-        # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-        # Enable this if you have graphical corruption issues or application crashes after waking
-        # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
-        # of just the bare essentials.
-        powerManagement.enable = false;
-
-        # Fine-grained power management. Turns off GPU when not in use.
-        # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-        powerManagement.finegrained = false;
-
-        # Use the NVidia open source kernel module (not to be confused with the
-        # independent third-party "nouveau" open source driver).
-        # Support is limited to the Turing and later architectures. Full list of
-        # supported GPUs is at:
-        # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-        # Only available from driver 515.43.04+
-        # Currently alpha-quality/buggy, so false is currently the recommended setting.
-        open = false;
-
-        # Enable the Nvidia settings menu,
-        # accessible via `nvidia-settings`.
-        nvidiaSettings = true;
-
-        # Optionally, you may need to select the appropriate driver version for your specific GPU.
-        package = config.boot.kernelPackages.nvidiaPackages.stable;
-      } else null;
-  };
 
   services.k3s = {
     enable = true;
