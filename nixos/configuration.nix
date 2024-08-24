@@ -90,6 +90,7 @@
 	    "--disable servicelb"
 	    "--disable traefik"
 	    "--disable local-storage"
+	    "--docker"
     ] ++ (if meta.hostname == "homelab-0" then [] else [
 	      "--server https://10.71.71.60:6443"
     ]));
@@ -140,6 +141,7 @@
      cifs-utils
      nfs-utils
      git
+     docker
   ];
 
   # List services that you want to enable:
