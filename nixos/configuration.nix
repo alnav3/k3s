@@ -16,6 +16,9 @@
   # allow unfree for nvidia drivers
   nixpkgs.config.allowUnfree = true;
 
+  # enable docker
+  services.docker.enable = true;
+
   # NVIDIA configuration
   hardware.opengl.enable = lib.mkIf (meta.hostname == "homelab-0") true;
   services.xserver.videoDrivers = lib.mkIf (meta.hostname == "homelab-0") [ "nvidia" ];
@@ -115,7 +118,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.alnav = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "docker" ]; # Enable ‘sudo’ for the user.
     # Created using mkpasswd
     hashedPassword = "$6$Ld6VVI/GPx3tS3HO$pAjCdjWroN88QoCPCER7UdXq1XTbC1C8linCar7/ykEsgtya4JesK1ILX5ffoRqgMkTR/NPN10NfYsvI2yHzE.";
     openssh.authorizedKeys.keys = [
@@ -141,7 +144,6 @@
      cifs-utils
      nfs-utils
      git
-     docker
   ];
 
   # List services that you want to enable:
