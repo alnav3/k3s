@@ -17,7 +17,7 @@
   nixpkgs.config.allowUnfree = true;
 
   # enable docker
-  services.docker.enable = true;
+  virtualisation.docker.enable = true;
 
   # NVIDIA configuration
   hardware.opengl.enable = lib.mkIf (meta.hostname == "homelab-0") true;
