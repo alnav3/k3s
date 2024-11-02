@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-proxmox
+  namespace: external-services
+spec:
+  rules:
+  - host: proxmox.home
+    http:
+      paths:
+      - backend:
+          service:
+            name: proxmox
+            port:
+              number: 8006
+        path: /
+        pathType: ImplementationSpecific

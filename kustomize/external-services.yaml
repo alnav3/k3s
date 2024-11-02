@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxmox
+  namespace: external-services
+spec:
+  ports:
+    - port: 8006
+      targetPort: 8006
+  clusterIP: None
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: proxmox
+  namespace: external-services
+subsets:
+  - addresses:
+      - ip: 10.71.71.30
+    ports:
+      - port: 8006
+
