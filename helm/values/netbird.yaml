@@ -1,0 +1,35 @@
+auth:
+  ## @param auth.audience
+  ##
+  audience: account  # Puedes dejarlo tal cual, a menos que se requiera un valor específico
+
+  ## @param auth.authority
+  ##
+  authority: https://auth.alnav.dev/application/o/netbird
+
+  idp:
+    ## @param idp.managerType none, keycloak, or auth0
+    ##
+    managerType: auth0
+
+    clientID: netbird-management
+
+    secretKeyRef:
+      name: idp-credentials  # Asegurarse de que este Secret ya esté creado en Kubernetes con la clave del cliente
+      key: secretkey
+
+    grantType: client_credentials
+
+    # Configuraciones adicionales necesarias para Keycloak:
+    #adminEndpoint: https://auth.alnav.dev/application/o/userinfo/
+    #tokenEndpoint: https://auth.alnav.dev/application/o/token/
+
+management:
+  ingress:
+    enabled: true
+    hosts:
+      - host: "netbird-management.home"
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+

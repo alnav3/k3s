@@ -1,0 +1,7 @@
+ingress:
+  className: nginx-internal
+  hosts:
+    - host: alnav.dev
+      paths:
+        - path: /
+          pathType: Prefix

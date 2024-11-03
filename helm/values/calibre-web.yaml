@@ -1,0 +1,55 @@
+---
+env:
+  TZ: "America/New_York"
+image:
+  # -- image repository
+  repository: ghcr.io/linuxserver/calibre-web
+  # -- image tag
+  tag:
+  # -- image pull policy
+  pullPolicy: IfNotPresent
+
+service:
+  main:
+    type: LoadBalancer
+    loadBalancerIP: "10.71.71.199"
+    ports:
+      http:
+        port: 8083
+
+persistence:
+  config:
+    enabled: true
+    mountPath: /config
+    existingClaim: "calibre-config" # Nombre del PVC existente para config
+    size: 1Gi
+    storageClass: "longhorn"  # Replace with your storage class
+    accessMode: ReadWriteOnce
+  books:
+    enabled: true
+    mountPath: /books
+    existingClaim: "calibre-books"  # Nombre del PVC existente para books
+    size: 5Gi
+    storageClass: "longhorn"  # Replace with your storage class
+    accessMode: ReadWriteOnce
+ingress:
+  main:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+      nginx.ingress.kubernetes.io/proxy-set-headers: "nginx-ingress-headers"
+      nginx.ingress.kubernetes.io/proxy-set-header-Upgrade: "Upgrade"
+      nginx.ingress.kubernetes.io/proxy-set-header-Connection: "upgrade"
+      nginx.ingress.kubernetes.io/proxy-set-header-X-Forwarded-Host: "books.alnav.dev"
+      nginx.ingress.kubernetes.io/proxy-cookie-path: "/ /; Secure"
+    hosts:
+      - host: books.alnav.dev
+        paths:
+          - path: /
+            pathType: Prefix
+      - host: calibre.home
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []  # Enable this if you want to add TLS/SSL support

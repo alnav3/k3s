@@ -1,0 +1,22 @@
+authentik:
+    secret_key: "4S0cm6nDf6Qt9XoEQVEsQUu2VrgGf5OpoKgokQyiOVh0XkNpRxpHjG5lgkd3Neu2CYlNPFLdbQNaSTx8"
+    # This sends anonymous usage-data, stack traces on errors and
+    # performance data to sentry.io, and is fully opt-in
+    error_reporting:
+        enabled: false
+    postgresql:
+        password: "Rfrq13xV7RrIl1LgCzb954ahUDeEQE8jSkse3IDhQSk5gCN0nA"
+
+server:
+    ingress:
+        # Specify kubernetes ingress controller class name
+        enabled: true
+        hosts:
+            - auth.alnav.dev
+
+postgresql:
+    enabled: true
+    auth:
+        password: "Rfrq13xV7RrIl1LgCzb954ahUDeEQE8jSkse3IDhQSk5gCN0nA"
+redis:
+    enabled: true

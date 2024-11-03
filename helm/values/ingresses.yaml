@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: calibre-web-ingress
+  namespace: calibre-system
+  annotations:
+    kubernetes.io/ingress.class: nginx-internal
+spec:
+  ingressClassName: nginx-internal
+  rules:
+  - host: calibre-web.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: calibre-web
+            port:
+              number: 80
+  tls:
+  - secretName: calibre-web-tls  # Optional: Ensure the secret exists if using TLS
+    hosts:
+    - calibre-web.local
+

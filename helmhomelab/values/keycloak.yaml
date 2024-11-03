@@ -1,0 +1,25 @@
+keycloak:
+  service:
+    type: ClusterIP
+  persistence:
+    dbVendor: h2
+    deployPostgres: false
+  extraEnv: |
+    - name: KEYCLOAK_USER
+      value: admin
+    - name: KEYCLOAK_PASSWORD
+      value: admin
+  extraInitContainers: |
+    - name: fix-permissions
+      image: busybox
+      command:
+        - sh
+        - -c
+        - chown -R 1000:1000 /opt/jboss/keycloak/standalone/data
+      volumeMounts:
+        - name: keycloak-data
+          mountPath: /opt/jboss/keycloak/standalone/data
+
+ingress:
+  enabled: true
+  hostname: keycloak.home

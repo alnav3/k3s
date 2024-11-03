@@ -1,0 +1,25 @@
+---
+persistedVolumeClaim:
+  enabled: true
+DNS1:
+  10.71.71.1
+DNS2:
+  9.9.9.9
+ingress:
+  enabled: true
+  hosts:
+    - "pihole.home"
+
+serviceWeb:
+  loadBalancerIP: 10.71.71.250
+  annotations:
+    metallb.universe.tf/allow-shared-ip: pihole-svc
+  type: LoadBalancer
+
+serviceDns:
+  loadBalancerIP: 10.71.71.250
+  annotations:
+    metallb.universe.tf/allow-shared-ip: pihole-svc
+  type: LoadBalancer
+
+replicaCount: 1

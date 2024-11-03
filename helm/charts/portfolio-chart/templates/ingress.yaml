@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portfolio
+  namespace: portfolio-system
+  annotations:
+    meta.helm.sh/release-name: portfolio
+    meta.helm.sh/release-namespace: portfolio-system
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app.kubernetes.io/instance: portfolio
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: portfolio
+    app.kubernetes.io/version: latest
+    helm.sh/chart: portfolio-chart-0.1.0
+spec:
+  rules:
+  - host: alnav.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: portfolio-portfolio-chart
+            port:
+              name: http
+        path: /
+        pathType: ImplementationSpecific
+  - host: portfolio.home
+    http:
+      paths:
+      - backend:
+          service:
+            name: portfolio-portfolio-chart
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  - host: portfolio.alnav.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: portfolio-portfolio-chart
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+status:
+  loadBalancer: {}

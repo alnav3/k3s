@@ -1,0 +1,17 @@
+externalAccess:
+  enabled: true
+  controller:
+    service:
+      type: LoadBalancer
+      loadBalancerIPs:
+        - "10.71.71.200"
+        - "10.71.71.201"
+        - "10.71.71.202"
+  broker:
+    service:
+      type: LoadBalancer
+      loadBalancerIPs:
+        - "10.71.71.200"
+        - "10.71.71.201"
+        - "10.71.71.202"
+

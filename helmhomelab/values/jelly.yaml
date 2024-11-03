@@ -1,0 +1,40 @@
+env:
+  NVIDIA_VISIBLE_DEVICES: all
+  NVIDIA_DRIVER_CAPABILITIES: all
+
+extraArgs: ["--runtime=nvidia"]
+
+ingress:
+  enabled: true
+  hosts:
+    - host: jellyfin.alnav.dev
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+persistence:
+  config:
+    enabled: true
+    isPvc: false  # Deshabilitar el uso de PVC
+    customVolume:
+      hostPath:
+        path: "/media/Jellyfin/config"  # Especifica la ruta en tu nodo
+
+  data:
+    enabled: true
+    isPvc: false  # Deshabilitar el uso de PVC
+    customVolume:
+      hostPath:
+        path: "/media/Jellyfin/media"  # Especifica otra ruta en tu nodo para datos (si necesario)
+
+
+replicaCount: 1  # Asegúrate de que solo una réplica esté corriendo
+
+service:
+  port: 8096
+  type: ClusterIP
+
+nodeSelector:
+  role: master
+
+

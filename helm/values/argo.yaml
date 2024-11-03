@@ -1,0 +1,22 @@
+global:
+  domain: argo.alnav.dev
+dex:
+  enabled: false
+notifications:
+  enabled: false
+applicationSet:
+  enabled: false
+server:
+  ingress:
+    ## If true, Prometheus server Ingress will be created
+    enabled: true
+
+    ## Prometheus server Ingress hostnames with optional path
+    ## Must be provided if Ingress is enabled
+    ##
+    hosts:
+      - argo.alnav.dev
+
+    path: /
+  extraArgs:
+    - --insecure
